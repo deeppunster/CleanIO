@@ -7,6 +7,7 @@ __project__ = 'CleanIOProject'
 __creation_date__ = '05/22/2022'
 __version__ = '0.1.0'
 
+import os
 from logging import getLogger, debug, error
 from pathlib import Path
 
@@ -33,23 +34,29 @@ class CleanRead:
             raise TypeError('file_path must be a string or a pathlike object')
         if not self.file_exists:
             raise OSError(f'File {self.filename} not found.')
+        # self.read_gen = self._read()
         return
 
     def clean_read(self):
         """
-        Read a line from a text file.
+        Open and manage reading a text file with a generator.
 
-        :return: The line just read
+        :return:
         """
-        with open(self.pathname, 'r') as fr:
-            textline = fr.readline()
-            yield textline
+        with open(self.pathname, 'rt') as fr:
+            while True:
+                textline = fr.readline()
+                if not textline:
+                    break
+                text = textline.removesuffix('\n')
+                yield text
+
         return
 
 
 class CleanWrite:
     """
-    CleanWrite - Write a text file without the clutter in mainstream code.
+    CleanWriteClass - Write a text file without the clutter in mainstream code.
     """
 
     def __init__(self, file_path: Path | str):
@@ -70,17 +77,19 @@ class CleanWrite:
         if self.file_exists:
             raise OSError(f'File {self.filename} already exists.')
         # initialize the generator
-        self._write(None)
+        self.write_gen = self._write()
+        self.write_gen.__next__()
         return
 
-    def clean_write(self, text_line: str):
+    def clean_writeline(self, text_line: str):
         """
         Write a line to a text file.
 
+        :param text_line: a line of text to write to the file
         :return:
         """
-        line_of_text = text_line
-        self._write().send(line_of_text)
+        line_of_text = text_line + '\n'
+        self.write_gen.send(line_of_text)
         return
 
     def clean_close(self):
@@ -89,7 +98,7 @@ class CleanWrite:
 
         :return:
         """
-        self._write().close()
+        self.write_gen.close()
 
     def _write(self):
         """
@@ -97,13 +106,22 @@ class CleanWrite:
 
         :return:
         """
-        with open(self.pathname, 'W') as fw:
-            textline = yield
-            fw.writelines(textline)
+        with open(self.pathname, 'wt') as fw:
+            while True:
+                textline = yield
+                fw.write(textline)
         return
 
 
 if __name__ == '__main__':
-    pass
+    filename = 'Selftext.txt'
+    filepath: Path = Path(filename)
+    filepath.unlink(missing_ok=True)
+    cw = CleanWrite(filename)
+    cw.clean_writeline('test line')
+    cw.clean_close()
+    cr = CleanRead(filename)
+    for line in cr.clean_read():
+        print(line)
 
 # EOF

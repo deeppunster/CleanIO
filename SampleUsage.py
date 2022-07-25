@@ -17,14 +17,14 @@ lines_of_text = [
 ]
 
 
-def sample_write(fileanme: str):
+def sample_write(filename: str):
     """
     Write the lines of text to a file.
 
-    :param fileanme:
+    :param filename:
     :return:
     """
-    cw = CleanWrite(fileanme)
+    cw = CleanWrite(filename)
     for line in lines_of_text:
         cw.clean_writeline(line)
     cw.clean_close()

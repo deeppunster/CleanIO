@@ -4,12 +4,12 @@ CleanIO Project
 
 CleanIO is a simple project illustrating how to use the yield statement to
 make reading and writing text files simple and to remove the clutter and
-boilerplace from your mainstream code.
+boilerplate from your mainstream code.
 
 This project also shows how to use the library ``python-dotenv`` to store
 secret
 information that should not be added to the git repository.  See the
-program ``SampleUsage.py`` for an example of hoe to use the method
+program ``SampleUsage.py`` for an example of how to use the method
 ``dotenv_values``.
 
 Usage

@@ -28,9 +28,7 @@ def test_existance():
     filename = 'test_cleanwrite_existance.txt'
     pathname = Path(filename)
     pathname.touch(exist_ok=True)
-    with pytest.raises(
-        IOError, match=f'File {filename} already exists.'
-    ) as exc:
+    with pytest.raises(IOError, match=f'File {filename} already exists.'):
         cw = CleanWrite(filename)
     return
 

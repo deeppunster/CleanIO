@@ -7,8 +7,7 @@ __project__ = 'CleanIOProject'
 __creation_date__ = '05/22/2022'
 __version__ = '0.1.0'
 
-import os
-from logging import getLogger, debug, error
+
 from pathlib import Path
 
 
@@ -30,7 +29,7 @@ class CleanRead:
             self.pathname = Path(self.filename)
         try:
             self.file_exists = self.pathname.exists()
-        except TypeError as e:
+        except TypeError:
             raise TypeError('file_path must be a string or a pathlike object')
         if not self.file_exists:
             raise OSError(f'File {self.filename} not found.')
@@ -72,7 +71,7 @@ class CleanWrite:
             self.pathname = Path(self.filename)
         try:
             self.file_exists = self.pathname.exists()
-        except TypeError as e:
+        except TypeError:
             raise TypeError('file_path must be a string or a pathlike object')
         if self.file_exists:
             raise OSError(f'File {self.filename} already exists.')

@@ -1,7 +1,6 @@
 """
 test_cleanread.py - test the CleanRead class.
 """
-from os import write
 from pathlib import Path
 
 import pytest
@@ -30,7 +29,7 @@ def test_nonexistance():
     pathname = Path(filename)
     if pathname.exists():
         pathname.unlink()
-    with pytest.raises(IOError, match=f'File {filename} not found') as exc:
+    with pytest.raises(IOError, match=f'File {filename} not found'):
         cr = CleanRead(filename)
     return
 

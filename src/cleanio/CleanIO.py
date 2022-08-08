@@ -8,6 +8,7 @@ __creation_date__ = '05/22/2022'
 __version__ = '0.1.0'
 
 
+from os import R_OK, access
 from pathlib import Path
 
 
@@ -33,7 +34,12 @@ class CleanRead:
             raise TypeError('file_path must be a string or a pathlike object')
         if not self.file_exists:
             raise OSError(f'File {self.filename} not found.')
-        # self.read_gen = self._read()
+        if not self.pathname.is_file():
+            raise OSError(
+                f'The name given - {self.filename} - is not a file.'
+            )
+        if not access(self.pathname, R_OK):
+            raise TypeError('File {self.filename} is not readable.')
         return
 
     def clean_read(self):
